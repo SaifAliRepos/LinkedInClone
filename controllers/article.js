@@ -1,13 +1,15 @@
 const Article = require('../models/article')
 const multer = require('multer')
-const like = require('../models/like')
+const Profile = require('../models/profile')
+const User = require('../models/user')
+const { validationResult } = require('express-validator')
 
 const getAllArticles = (req, res) => {
   let articles = Article.find({}, (err, data) => {
     if (err) throw err
     // res.render('articles/index', { articles: data })
     res.send({ articles: data })
-  }).sort({ date: 'desc' })
+  }).populate('user', ['name', 'email']).sort({ date: 'desc' })
 }
 
 const showArticle = async (req, res) => {
@@ -18,10 +20,18 @@ const showArticle = async (req, res) => {
 }
 
 const postArticle = async (req, res) => {
-  let article = new Article(req.body)
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  };
+
+  const { title, description
+  } = req.body
+  const user = req.user.id
+
+  let article = new Article({ title, description, user })
   try {
     article = await article.save()
-    console.log(article)
     // res.redirect(`/articles/${article.id}`)
     res.send({ article })
   } catch (error) {
@@ -32,6 +42,7 @@ const postArticle = async (req, res) => {
 
 const updateArticle = async (req, res) => {
   try {
+
     let article = await Article.findOneAndUpdate({ slug: req.params.slug }, req.body)
     // res.redirect('/')
     res.send({ article })
@@ -44,20 +55,26 @@ const updateArticle = async (req, res) => {
 
 const updateLikes = async (req, res) => {
   try {
-    await Article.findOneAndUpdate({ slug: req.params.slug }, [{
-      $set: {
-        like: {
-          $switch: {
-            branches: [
-              { case: { $eq: ["$like", 1] }, then: { $sum: ["$like", -1] } },
-              { case: { $eq: ["$like", 0] }, then: { $sum: ["$like", 1] } }
-            ]
-          }
-        }
-      }
-    }])
 
-    res.send(like)
+    let article = await Article.findById(req.params.article_id)
+
+    const addLike = {
+      user: req.user.id
+    }
+
+    const index = article.like.findIndex(i => {
+      return (i.user.toString() == req.user.id)
+    })
+
+    if (index < 0) {
+      article.like.unshift(addLike)
+    } else {
+      article.like.splice(index, 1)
+    }
+
+    await article.save()
+
+    res.send(article)
   } catch (error) {
     res.send(error)
   }
@@ -69,40 +86,59 @@ const deleteArticle = async (req, res) => {
   res.send(`Article with id: ${req.params.id} deleted`)
 }
 
+const deleteComments = async (req, res) => {
+
+  try {
+
+    let article = await Article.findById(req.params.article_id)
+
+    if (!article) {
+      res.json("Article not founf!")
+    }
+
+    const index = article.comments.findIndex((i) => {
+      if (i.id !== req.params.comment_id) {
+        throw ("No match found")
+      }
+      return i.id == req.params.comment_id
+    })
+
+    article.comments.splice(index, 1)
+
+    await article.save()
+
+    res.json(article)
+
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
+const postComments = async (req, res) => {
+
+  try {
+
+    let user = await User.findById(req.user.id).select('-password')
+    let article = await Article.findById(req.params.article_id)
+
+    const newComment = {
+      text: req.body.text,
+      user: user.id
+    }
+    if (!article) {
+      res.status(400).json("Profile doesn't exists")
+    }
+
+    article.comments.unshift(newComment)
+
+    await article.save()
+
+    res.json(article)
+
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
 
 
-module.exports.getAllArticles = getAllArticles;
-module.exports.showArticle = showArticle;
-module.exports.postArticle = postArticle;
-module.exports.updateArticle = updateArticle;
-module.exports.updateLikes = updateLikes;
-module.exports.deleteArticle = deleteArticle;
-
-
-
-
-
-// let noOfCommentsOnArticle = Comment.countDocuments({}, (err, data) => { data })
-// let likes = await Like.find({}, (err, data) => data ).clone()
-// console.log(likes)
-
-// {
-//   $inc: {
-//     like: {
-//       $cond: {
-//         if: { $gte: 1 },
-//         then: 5,
-//         else: 6
-//       }
-//     }
-//   }
-// }
-
-
-// // {
-// //   $cond: {
-// //     if: { $gte: { "$like": 1 } },
-// //     then: { $inc: { "$like": 1 } },
-// //     else: { $inc: { "$like": 5 } }
-// //   }
-// // }
+module.exports = { deleteComments, postComments, deleteArticle, updateLikes, updateArticle, postArticle, showArticle, getAllArticles }
