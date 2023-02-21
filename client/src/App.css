@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Moon+Dance&family=Nunito:wght@300&display=swap');
+
+* {
+  font-family: 'Nunito', sans-serif;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.blue {
+  color: #1c87c9;
+}
+
+.gray-text {
+  font-size: large;
+  color: gray;
+}
+
+.gray-text:hover {
+  color: black;
+}
+
+.x-large-btn {
+  padding-left: 175px !important;
+  padding-right: 175px !important;
+}
+
+@media only screen and (max-width: 850px) {
+  .x-large-btn {
+    padding-left: 65px !important;
+    padding-right: 65px !important;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .x-large-btn {
+    padding-left: 100px !important;
+    padding-right: 100px !important;
+  }
+}
+
+.sm-container {
+  width: 50% !important;
+}
+
+@media only screen and (max-width: 800px) {
+  .sm-container {
+    width: auto !important;
+  }
+}
