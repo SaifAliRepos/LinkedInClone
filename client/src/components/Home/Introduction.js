@@ -2,7 +2,7 @@ import React from 'react'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image'
-import BasicLoginForm from './Forms/LoginForm';
+import BasicLoginForm from '../Users/LoginForm';
 
 export const Introduction = () => {
   return (

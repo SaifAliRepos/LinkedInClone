@@ -44,8 +44,37 @@
   }
 }
 
+/* html body * {
+  background-color: lightgray;
+} */
+
+.vertical-rule {
+  border-left: 2px solid #ccc;
+  /* or border-right for right-side rule */
+  height: 50px;
+  /* change to adjust the height of the rule */
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.mleft-4 {
+  margin-left: 20px;
+}
+
+.mright-4 {
+  margin-right: 20px;
+}
+
+.mt-neg {
+  margin-top: -20px;
+}
+
 .blue {
   color: #1c87c9;
+}
+
+.bg-blue {
+  background-color: #1c87c9;
 }
 
 .gray-text {

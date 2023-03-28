@@ -4,25 +4,25 @@ export const alertSlice = createSlice({
   name: 'alert',
   initialState: {
     value: false,
-    text: ''
+    text: '',
   },
+
   reducers: {
-    SET_AlERT: (state) => {
-      state.text = 'Hello this is toast'
+    SET_AlERT: (state, action) => {
+      state.value = true;
+      state.text = action.payload.msg;
     },
-    REMOVE_ALERT: (state) => {
-      state.value = false
+    REMOVE_ALERT: (state, action) => {
+      state.value = false;
+      state.text = '';
     },
-    SET_ALERT_TEXT: (state) => {
-      state.text = 'Hello toast is here'
-    },
-    REMOVE_ALERT_TEXT: (state) => {
-      state.text = ''
-    }
   },
 })
 
-export const { SET_AlERT, REMOVE_ALERT, SET_ALERT_TEXT, REMOVE_ALERT_TEXT } = alertSlice.actions
+export const { SET_AlERT, REMOVE_ALERT } = alertSlice.actions
 export default alertSlice.reducer
+
+
+
 
 

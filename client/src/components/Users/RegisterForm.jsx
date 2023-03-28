@@ -4,10 +4,15 @@ import Col from 'react-bootstrap/esm/Col';
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Form from 'react-bootstrap/Form';
-import { connect } from 'react-redux';
-import { setAlert } from '../../actions/alert';
+import { useDispatch } from 'react-redux';
+import { useAuth } from '../../actions/auth';
+import { SET_AlERT } from '../../reducers/alertSlice';
 
-const RegisterForm = ({ setAlert }) => {
+const RegisterForm = () => {
+
+  const dispatch = useDispatch();
+  const { register } = useAuth();
+
 
   const [registerFormData, setFormData] = useState({
     name: '',
@@ -26,11 +31,16 @@ const RegisterForm = ({ setAlert }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setAlert("Password didnt matched", "danger")
+      dispatch(SET_AlERT({ msg: 'Password mismatch' }))
     } else {
-      console.log(registerFormData)
+      const success = await register({ name, email, password });
+      if (success) {
+        dispatch(SET_AlERT({ msg: 'User registered succesfully' }))
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);
+      }
     }
-
   }
 
   return (
@@ -66,5 +76,5 @@ const RegisterForm = ({ setAlert }) => {
   )
 }
 
-export default connect(null, { setAlert })(RegisterForm);
+export default RegisterForm;
 
