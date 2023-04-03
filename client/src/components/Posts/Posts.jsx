@@ -6,14 +6,13 @@ import { usePost } from '../../actions/posts';
 import Button from 'react-bootstrap/Button';
 import NewPost from './NewPost';
 import { useMediaQuery } from 'react-responsive';
-import Bag from '../../icons/bag';
-import Share from '../../icons/share';
-import KitchenSinkExample from '../Utils/ProfileStats';
 import Image from 'react-bootstrap/Image';
-import Gallery from '../../icons/image';
 import ViewPost from './ViewPost';
 import Heart from 'react-heart';
 import Comments from './Comments/Comments';
+import ProfileStats from '../Utils/ProfileStats';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 export const Posts = () => {
   const isSmallScreen = useMediaQuery({ maxWidth: 576 });
@@ -25,7 +24,7 @@ export const Posts = () => {
 
   const fetchData = async () => {
     let fetchedPosts = await getPosts();
-    setPosts(fetchedPosts.articles);
+    setPosts(fetchedPosts?.articles);
   };
 
   const handleRemovePost = async (id) => {
@@ -40,17 +39,26 @@ export const Posts = () => {
   }, [removePost]);
 
   return (
-    <div>
-      <Container>
-        <div className='text-center py-2 my-3 bg-light'>
-          <Gallery /> &nbsp;&nbsp; <Bag /> &nbsp;&nbsp; <Share />
+    <div className='bg-gray py-5'>
+      <Container className='px-5'>
+        <div className='offset-3 w-50 mb-4'>
+          <InputGroup>
+            <Form.Control
+              className='rounded-0'
+              placeholder='What are you looking for?'
+            />
+            <Button variant='dark' className='rounded-0'>
+              Search
+            </Button>
+          </InputGroup>
+          <hr />
         </div>
 
         <Row>
-          <Col className='text-center d-md-none d-lg-block'>
-            <KitchenSinkExample />
+          <Col md={3} className='text-center d-md-none d-lg-block'>
+            <ProfileStats />
           </Col>
-          <Col md={6} className='bg-light border shadow'>
+          <Col md={6} className='bg-white border shadow rounded'>
             <div className='my-3'>
               {posts && posts.length > 0 ? (
                 <ul>
@@ -61,9 +69,7 @@ export const Posts = () => {
                         <small className='d-flex'>{post.user.email}</small>
                         <small className='d-flex'>{post.date}</small>
                       </p>
-                      <h5 className='d-inline'>
-                        <strong>{post.title}</strong>
-                      </h5>
+                      <strong className='d-inline'>{post.title}</strong>
                       <div>
                         <p className='text-secondary'></p>
                         <p>{post.description}</p>
@@ -71,9 +77,9 @@ export const Posts = () => {
                       <Image
                         fluid
                         className='mb-4'
-                        src='https://fakeimg.pl/440x320/282828/eae0d0/?retina=1'
+                        src={post.img}
                         alt=''
-                        width={'570px'}
+                        width={'540px'}
                       />
                       <p className='d-flex mx-3 mt-neg'>
                         <strong>{post.like.length} Likes &nbsp;&nbsp;</strong>
@@ -118,8 +124,8 @@ export const Posts = () => {
               )}
             </div>
           </Col>
-          <Col md={3} className='text-center mt-3'>
-            <div className={isSmallScreen ? 'p-4' : 'position-fixed'}>
+          <Col md={3} className='text-center mt-2'>
+            <div className={isSmallScreen ? 'p-5' : 'position-fixed'}>
               <h3 className='mb-3'>Create a new post</h3>
               <NewPost actionBtn='Post' fetchData={fetchData} />
             </div>

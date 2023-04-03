@@ -3,13 +3,16 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/esm/Container';
 import Form from 'react-bootstrap/Form';
 import { usePost } from '../../actions/posts';
+import Badge from 'react-bootstrap/Badge';
 
 function NewPost(props) {
   const { createPost, updatePost } = usePost();
+  const [img, setImg] = useState('');
 
   const [postData, setFormData] = useState({
     title: props?.data?.title || '',
     description: props?.data?.description || '',
+    img: props?.data?.img || '',
   });
 
   const { title, description } = postData;
@@ -21,6 +24,25 @@ function NewPost(props) {
       [e.target.name]: e.target.value,
     });
 
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      if (dataUrl) {
+        // Check the size of the dataUrl before setting the img state
+        const maxImgSize = 3 * 1024 * 1024; // 5MB max size
+        if (dataUrl.length <= maxImgSize) {
+          setImg(dataUrl);
+        } else {
+          // Handle error for dataUrl that exceeds the max size
+          console.error('The selected file is too large.');
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     if (props.actionBtn === 'Update') {
@@ -31,7 +53,7 @@ function NewPost(props) {
     }
 
     if (props.actionBtn === 'Post') {
-      await createPost({ title, description });
+      await createPost({ title, description, img });
       props.fetchData();
     }
   };
@@ -62,6 +84,15 @@ function NewPost(props) {
               required
             />
           </Form.Group>
+          <Form.Group className='mb-4' controlId='formTitle'>
+            <Form.Control
+              size='sm'
+              type='file'
+              name='image'
+              onChange={handleFileChange}
+              required
+            />
+          </Form.Group>
 
           <Button
             type='submit'
@@ -72,7 +103,10 @@ function NewPost(props) {
             {props.actionBtn}
           </Button>
           <hr />
-          <p>Acheiving greateness together.</p>
+          <p>
+            {' '}
+            <Badge bg='secondary'>Converting dreams into reality.</Badge>
+          </p>
         </Form>
       </Container>
     </div>

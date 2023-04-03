@@ -23,7 +23,7 @@ function Comments(props) {
   const { addComment, deleteComment } = usePost();
   const [text, setComment] = useState('');
 
-  const presentUser = useSelector((state) => state.auth.user.user._id);
+  const presentUser = useSelector((state) => state.auth.user?._id);
 
   const postId = props?.postId || '';
 
@@ -41,7 +41,7 @@ function Comments(props) {
 
   return (
     <Accordion>
-      <Card className='bg-light border-0 mt-3'>
+      <Card className='border-0 mt-3'>
         <Card.Header style={{ border: 'none', backgroundColor: 'transparent' }}>
           <CustomToggle eventKey='0'>
             <Chat />
@@ -58,12 +58,12 @@ function Comments(props) {
                       <p className='d-inline'>{comment.text}</p>
 
                       <Button
-                        variant='light'
+                        variant='tranparent'
                         size='sm'
                         className={
                           comment.user === presentUser ? 'mx-1' : 'd-none'
                         }
-                        onClick={() => handleRemoveComment(comment._id)}
+                        onClick={() => handleRemoveComment(comment?._id)}
                       >
                         <Trash />
                       </Button>

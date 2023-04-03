@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect } from 'react';
 import NavScrollExample from './components/Header/Navbar';
@@ -14,6 +14,7 @@ import { PrivateRoutes } from './components/Routes/PrivateRoutes'
 import { Posts } from './components/Posts/Posts';
 import { Profiles } from './components/Profiles/Profiles';
 import RegisterForm from './components/Users/RegisterForm';
+import ViewProfile from './components/Profiles/ViewProfile';
 
 
 function App() {
@@ -37,13 +38,14 @@ function App() {
   return (
     <div>
       <Provider store={store}>
-        <NavScrollExample />
-        <AutohideToast />
         <Router>
+          <NavScrollExample />
+          <AutohideToast />
           <Routes>
             <Route path="/" element={<Introduction />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/profiles" element={<PrivateRoutes Component={Profiles} />} />
+            <Route path="/profiles/user/:user_id" element={<PrivateRoutes Component={ViewProfile} />} />
             <Route path="/posts" element={<PrivateRoutes Component={Posts} />} />
           </Routes>
         </Router>

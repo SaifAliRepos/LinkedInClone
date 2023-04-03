@@ -8,7 +8,6 @@ export default function ViewPost(props) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  // const cheese = props.cheese;
 
   return (
     <>

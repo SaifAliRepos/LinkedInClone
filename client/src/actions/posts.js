@@ -11,7 +11,7 @@ export const usePost = () => {
   const createPost = async (formData) => {
     try {
       await api.post('/articles/new', formData);
-      // dispatch(REGISTER_SUCCESS({ token: res.data.token }));
+      dispatch(SET_AlERT({ msg: 'Post created successfully!' }));
       return true
 
     } catch (err) {

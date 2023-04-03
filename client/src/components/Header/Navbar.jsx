@@ -4,6 +4,8 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Community from '../../icons/community';
 import Linkedin from '../../icons/linkedin';
 import Posts from '../../icons/posts';
 import Profile from '../../icons/profiles';
@@ -11,14 +13,22 @@ import { LOGOUT } from '../../reducers/authSlice';
 
 const NavScrollExample = () => {
   const activeUser = useSelector((state) => state.auth.user);
+  const activeUserId = useSelector((state) => state.auth.user?._id);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const navbarStyle =
+    location.pathname === '/'
+      ? 'px-5 mt-2 bg-white'
+      : 'px-5 mt-2 shadow bg-white';
 
   return (
-    <div className='mx-5'>
-      <Navbar expand='lg' className='mx-5 my-3'>
+    <div>
+      <Navbar expand='lg' className={navbarStyle}>
         <Container>
           <Navbar.Brand href='/'>
-            <span className='my-4 mx-1 h3 blue'>m i n i LINKED</span>
+            <span className='my-4 mx-1 h4 blue'>m i n i LINKED</span>
             <Linkedin />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbarScroll' />
@@ -28,17 +38,29 @@ const NavScrollExample = () => {
               style={{ maxHeight: '100px' }}
               navbarScroll
             ></Nav>
-            <Nav.Link className='mright-4' href='/profiles'>
-              &nbsp;&nbsp;&nbsp;
-              <Profile />
+            <Nav.Link
+              className='mright-4'
+              onClick={() => navigate('/profiles')}
+            >
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Community />
               <br />
-              <span className='gray-text'>Profile</span>
+              <span className='gray-text'>Community</span>
             </Nav.Link>
-            <Nav.Link className='mright-4' href='/posts'>
+            <Nav.Link className='mright-4' onClick={() => navigate('/posts')}>
               &nbsp;&nbsp;
               <Posts />
               <br />
               <span className='gray-text'>Posts</span>
+            </Nav.Link>
+            <Nav.Link
+              className='mright-4'
+              onClick={() => navigate(`/profiles/user/${activeUserId}`)}
+            >
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Profile />
+              <br />
+              <span className='gray-text'>My Profile</span>
             </Nav.Link>
 
             <div className='d-none d-lg-block'>
@@ -50,7 +72,7 @@ const NavScrollExample = () => {
                 href='/register'
                 variant='outline-danger'
                 className={activeUser ? 'd-none' : 'rounded-5 mx-2'}
-                size='lg'
+                size='md'
               >
                 Register
               </Button>
@@ -58,7 +80,7 @@ const NavScrollExample = () => {
                 href='/'
                 variant='outline-primary'
                 className={'rounded-5'}
-                size='lg'
+                size='md'
                 onClick={() => activeUser && dispatch(LOGOUT())}
               >
                 {activeUser ? 'Logout' : 'Login'}

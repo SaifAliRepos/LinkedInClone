@@ -47,7 +47,7 @@ export const useAuth = () => {
     try {
       setAuthToken(localStorage.getItem('token'));
       const res = await api.get('/auth/');
-      dispatch(USER_LOADED({ user: res.data }));
+      dispatch(USER_LOADED(res.data));
       dispatch(SET_AlERT({ msg: "User loaded" }));
       return true;
 
