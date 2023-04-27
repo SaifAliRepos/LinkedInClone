@@ -3,8 +3,12 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../actions/auth';
+import { useMediaQuery } from 'react-responsive';
 
 const BasicLoginForm = () => {
+  const isMediumScreen = useMediaQuery({ maxWidth: 1000 });
+  const isSmallScreen = useMediaQuery({ maxWidth: 600 });
+
   let navigate = useNavigate();
   const { login, auth } = useAuth();
 
@@ -31,8 +35,8 @@ const BasicLoginForm = () => {
   };
 
   return (
-    <div className='offset-1 text-center'>
-      <Form className='offset-1 my-4' onSubmit={(e) => onSubmit(e)}>
+    <div className={isMediumScreen ? '' : 'offset-1'}>
+      <Form className=' offset-1 my-3' onSubmit={(e) => onSubmit(e)}>
         <Form.Group className='mb-4' controlId='formBasicEmail'>
           <Form.Control
             size='lg'
@@ -56,23 +60,24 @@ const BasicLoginForm = () => {
             required
           />
         </Form.Group>
-        <Button
-          type='submit'
-          size='lg'
-          variant='primary x-large-btn'
-          value='Login'
-        >
-          Login
-        </Button>
-        <hr />
-        <Button
-          onClick={() => navigate('/register')}
-          size='lg'
-          variant='light x-large-btn'
-          className='text-center'
-        >
-          Register
-        </Button>
+        <Form.Group className='mb-3 text-center' controlId='formBasicPassword'>
+          <Button
+            type='submit'
+            size='lg'
+            variant={isSmallScreen ? 'primary px-5' : 'primary x-large-btn'}
+            value='Login'
+          >
+            Login
+          </Button>
+          <hr />
+          <Button
+            onClick={() => navigate('/register')}
+            size='lg'
+            variant={isSmallScreen ? 'light px-5' : 'light x-large-btn'}
+          >
+            Register
+          </Button>
+        </Form.Group>
       </Form>
     </div>
   );

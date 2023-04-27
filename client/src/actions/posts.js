@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
 import { SET_AlERT } from "../reducers/alertSlice";
-import { LOGOUT } from "../reducers/authSlice";
 import api from "../utils/api";
 import { useCallback } from 'react';
+const itn = require('../constants/constants.json')
 
 export const usePost = () => {
 
@@ -11,7 +11,7 @@ export const usePost = () => {
   const createPost = async (formData) => {
     try {
       await api.post('/articles/new', formData);
-      dispatch(SET_AlERT({ msg: 'Post created successfully!' }));
+      dispatch(SET_AlERT({ msg: itn.POST_CREATED }));
       return true
 
     } catch (err) {
@@ -20,7 +20,6 @@ export const usePost = () => {
       if (errors) {
         errors.forEach((error) => dispatch(SET_AlERT({ msg: error.msg })));
       }
-      dispatch(LOGOUT());
       return false;
     }
   };
@@ -29,7 +28,7 @@ export const usePost = () => {
     try {
       const res = await api.get('/articles/');
       if (!res) {
-        console.log('Unable to fecth posts')
+        dispatch(SET_AlERT({ msg: itn.POST_NOT_LOADED }));
       }
       return res.data;
 
@@ -38,24 +37,47 @@ export const usePost = () => {
     }
   };
 
+  const getConnectedPosts = async (userId) => {
+    try {
+      const res = await api.get(`/articles/connected-articles`);
+      if (!res) {
+        dispatch(SET_AlERT({ msg: itn.POST_NOT_LOADED }));
+      }
+      return res.data;
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getUserPosts = async (userId) => {
+    try {
+      const res = await api.get(`/articles/user/${userId}/recent_activity/posts`);
+      if (!res) {
+        dispatch(SET_AlERT({ msg: itn.POST_NOT_LOADED }));
+      }
+      return res.data;
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const removePost = useCallback(async (id) => {
     try {
-      const res = await api.delete(`/articles/${id}`);
-      console.log(res);
+      await api.delete(`/articles/${id}`);
+      dispatch(SET_AlERT({ msg: itn.POST_DELETED }));
     } catch (err) {
       console.log(err);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
   const updatePost = async (formData, id) => {
     try {
-
-      console.log(formData)
-      console.log(id)
       await api.put(`/articles/edit/${id}`, formData);
-      // dispatch(REGISTER_SUCCESS({ token: res.data.token }));
-      return true
+      dispatch(SET_AlERT({ msg: itn.POST_UPDATED }));
 
     } catch (err) {
 
@@ -63,14 +85,12 @@ export const usePost = () => {
       if (errors) {
         errors.forEach((error) => dispatch(SET_AlERT({ msg: error.msg })));
       }
-      dispatch(LOGOUT());
-      return false;
     }
   };
 
-  const likePost = async (id) => {
+  const likePost = async (postId) => {
     try {
-      await api.put(`/articles/${id}/like`);
+      await api.put(`/articles/${postId}/like`);
       return true
 
     } catch (err) {
@@ -78,7 +98,6 @@ export const usePost = () => {
       if (errors) {
         errors.forEach((error) => dispatch(SET_AlERT({ msg: error.msg })));
       }
-      dispatch(LOGOUT());
       return false;
     }
   };
@@ -88,8 +107,7 @@ export const usePost = () => {
       await api.post(`/articles/${postId}/comment/new`, comment);
       return true
     } catch (error) {
-      console.log(error)
-      // dispatch(LOGOUT());
+      dispatch(SET_AlERT({ msg: error.msg }))
       return false;
     }
   }
@@ -99,8 +117,7 @@ export const usePost = () => {
       await api.delete(`/articles/${postId}/comment/${commentId}`);
       return true
     } catch (error) {
-      console.log(error)
-      // dispatch(LOGOUT());
+      dispatch(SET_AlERT({ msg: error.msg }))
       return false;
     }
   }
@@ -115,6 +132,8 @@ export const usePost = () => {
     updatePost,
     likePost,
     addComment,
-    deleteComment
+    deleteComment,
+    getConnectedPosts,
+    getUserPosts,
   };
 };

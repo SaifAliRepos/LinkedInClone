@@ -1,6 +1,6 @@
-const mongooose = require('mongoose')
+const mongoose = require('mongoose')
 
-const userSchema = new mongooose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -17,10 +17,45 @@ const userSchema = new mongooose.Schema({
   avatar: {
     type: String
   },
+  connections: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    }
+  }],
+  received_requests: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    email: {
+      type: String,
+      required: true
+    }
+  }],
+  sent_requests: [{
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    email: {
+      type: String,
+      required: true
+    }
+  }],
   date: {
     type: Date,
     default: () => Date.now()
   }
 })
 
-module.exports = mongooose.model('User', userSchema)
+
+module.exports = mongoose.model('User', userSchema)

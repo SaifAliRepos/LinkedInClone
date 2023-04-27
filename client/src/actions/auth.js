@@ -3,6 +3,7 @@ import { SET_AlERT } from "../reducers/alertSlice";
 import { LOGOUT, REGISTER_SUCCESS, USER_LOADED } from "../reducers/authSlice";
 import api from "../utils/api";
 import setAuthToken from "../utils/setAuthToken";
+const itn = require('../constants/constants.json')
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,6 @@ export const useAuth = () => {
       if (errors) {
         errors.forEach((error) => dispatch(SET_AlERT({ msg: error.msg })));
       }
-      dispatch(LOGOUT());
       return false;
     }
   };
@@ -28,7 +28,7 @@ export const useAuth = () => {
       const body = { email, password };
       const res = await api.post('/auth/', body);
       dispatch(REGISTER_SUCCESS({ token: res.data.token }));
-      dispatch(SET_AlERT({ msg: "Sign in sucessfull" }));
+      dispatch(SET_AlERT({ msg: itn.SIGNIN }));
       return true;
 
     } catch (err) {
@@ -48,7 +48,6 @@ export const useAuth = () => {
       setAuthToken(localStorage.getItem('token'));
       const res = await api.get('/auth/');
       dispatch(USER_LOADED(res.data));
-      dispatch(SET_AlERT({ msg: "User loaded" }));
       return true;
 
     } catch (err) {

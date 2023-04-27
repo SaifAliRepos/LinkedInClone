@@ -42,9 +42,7 @@ const postProfile = async (req, res) => {
   if (bio) profileParams.bio = bio;
   if (status) profileParams.status = status;
   if (githubusername) profileParams.githubusername = githubusername;
-  if (skills) {
-    profileParams.skills = skills.split(',')
-  };
+  if (skills) profileParams.skills = skills;
 
   //init social as it's uninitialized
 
@@ -57,6 +55,8 @@ const postProfile = async (req, res) => {
 
   try {
     let profile = await Profile.findOne({ user: req.user.id })
+
+    //throw error if profile not found.
 
     if (profile) {
       profile = await Profile.findOneAndUpdate({ user: req.user.id },
@@ -71,7 +71,7 @@ const postProfile = async (req, res) => {
     res.send(profile)
 
   } catch (error) {
-
+    res.json(error)
   }
 }
 
@@ -80,10 +80,10 @@ const getProfileByUserID = async (req, res) => {
 
     const profile = await Profile.findOne({ user: req.params.user_id }).populate('user', ['name', 'email'])
     if (!profile) {
-      return res.status(400).json({ Message: "User doesn't exists" })
+      return res.status(404).json({ error: "Profile doesn't exists" })
     }
 
-    res.json({ profile })
+    res.json(profile)
 
   } catch (error) {
     if (error.kind == 'ObjectId') {
@@ -129,13 +129,13 @@ const postExperience = async (req, res) => {
     return res.status(400).json({ errors: errors.array() })
   };
 
-  const { title, company,
+  const { title, location, company,
     from, to, description,
     current } = req.body;
 
 
   const newExperience = {
-    title, company,
+    title, company, location,
     from, to, description,
     current
   }
@@ -187,11 +187,11 @@ const postEducation = async (req, res) => {
     return res.status(400).json({ errors: errors.array() })
   };
 
-  const { name, location,
+  const { name, degree, location,
     from, to, current } = req.body;
 
   const newEducation = {
-    name, location, from, to, current
+    name, degree, location, from, to, current
   }
 
   try {
@@ -237,10 +237,29 @@ const deleteEducation = async (req, res) => {
 
 }
 
+const getConnectedProfiles = async (req, res) => {
+
+  try {
+
+    const user = await User.findById(req.user.id).select('connections.user')
+    const connectionIds = user.connections.map(connection => connection.user);
+
+    const profiles = await Profile.find({ user: { $in: connectionIds } }).populate('user', ['name', 'email']);
+
+    if (!profiles) {
+      res.json({ Message: "No profiles available" })
+    }
+    res.json({ profiles })
+
+  } catch (error) {
+    res.json(error)
+  }
+}
+
 
 module.exports = {
   getCurrentUserProfile, postProfile, getProfileByUserID,
   getAllProfiles, deleteProfile, postExperience, deleteExperience,
-  postEducation, deleteEducation
+  postEducation, deleteEducation, getConnectedProfiles
 }
 

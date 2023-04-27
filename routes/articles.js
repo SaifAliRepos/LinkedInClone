@@ -8,7 +8,7 @@ var fs = require('fs');
 var path = require('path');
 
 const Article = require('../models/article')
-const { postArticle, showArticle, updateArticle, updateLikes, deleteArticle, deleteComments, postComments } = require('../controllers/article');
+const { postArticle, showArticle, updateArticle, updateLikes, deleteArticle, deleteComments, postComments, getAllArticles, uploadImage, getConnectedArticles, showUsersArticle } = require('../controllers/article');
 const auth = require('../middleware/auth');
 const { body } = require('express-validator');
 const { profile } = require('console');
@@ -26,27 +26,41 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
+
 //New Article
 router.get('/new', (req, res) => {
   res.render('articles/new', { article: new Article() })
 })
 
+router.get('/',
+  getAllArticles)
+
+//Get articles of connections
+router.get('/connected-articles',
+  auth,
+  getConnectedArticles)
+
 //Show Article
-router.get('/:slug',
+router.get('/:id',
   showArticle)
+
+//show Article by user id
+router.get('/user/:user_id/recent_activity/posts',
+  auth,
+  showUsersArticle)
 
 //Post Articles
 router.post('/new', auth, body('title').exists().withMessage('Title is required'),
   body('description').exists().withMessage('Description is required'),
   postArticle)
 
-router.put('/:article_id',
+router.put('/:article_id/like',
   auth,
   updateLikes)
 
 //don't use callbacks in mongooose i.e. passing third argument in findAndUpdate function
 //update Articles
-router.put('/edit/:slug',
+router.put('/edit/:id',
   updateArticle)
 
 //Delete Articles

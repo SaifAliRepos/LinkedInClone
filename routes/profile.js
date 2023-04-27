@@ -11,7 +11,8 @@ const { getCurrentUserProfile, postProfile, getProfileByUserID,
   postExperience,
   deleteExperience,
   postEducation,
-  deleteEducation } = require('../controllers/profile')
+  deleteEducation,
+  getConnectedProfiles } = require('../controllers/profile')
 
 
 // @route    GET /profile/me
@@ -29,7 +30,6 @@ router.get('/me',
 
 router.post('/new', auth,
   body('company').exists().withMessage('Company is required'),
-  body('website').isURL({ require_tld: false }).withMessage('Website link should be URL'),
   check('status').isBoolean().withMessage('Status should be Boolean'),
   check('skills').not().isEmpty().withMessage('Skills are required'),
   postProfile
@@ -61,7 +61,7 @@ router.delete('/',
 // @desc     Adding experience on profile
 // @access   Private
 
-router.put('/experience/new', auth,
+router.post('/experience/new', auth,
   [body('title').exists().withMessage("Title is required"),
   body('company').exists().withMessage("Company is required"),
   body('from').exists().withMessage("Starting date is required")],
@@ -81,8 +81,9 @@ router.delete('/experience/:exper_id',
 // @desc     Adding education on profile
 // @access   Private
 
-router.put('/education/new', auth,
+router.post('/education/new', auth,
   [body('name').exists().withMessage("Name is required"),
+  body('degree').exists().withMessage("Degree is required"),
   body('location').exists().withMessage("Location is required"),
   body('from').exists().withMessage("Starting date is required")],
   postEducation
@@ -95,6 +96,14 @@ router.put('/education/new', auth,
 router.delete('/education/:edu_id',
   auth,
   deleteEducation)
+
+// @route    Get /profile/my-connections
+// @desc     Get profiles of my connections
+// @access   Private
+
+router.get('/connected-profiles',
+  auth,
+  getConnectedProfiles)
 
 
 module.exports = router;

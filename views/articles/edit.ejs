@@ -24,7 +24,7 @@
 
 <body>
   <div class="p-5">
-    <form method="POST" action="/articles/edit/<%= article.slug %>?_method=PUT">
+    <form method="POST" action="/articles/edit/<%= article.id %>?_method=PUT">
       <%- include('_form_fields.ejs') %>
       <button class="btn btn-sm btn-danger" type="submit">Update</button>
     </form>

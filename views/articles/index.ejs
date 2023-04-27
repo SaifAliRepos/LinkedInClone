@@ -41,13 +41,13 @@
       <p><mark><%= article.date.toDateString() %></mark></p>
       <p class=""><%= article.description %></p>
       <div class="btn-toolbar mb-5">
-        <a href="http://0.0.0.0:3005/articles/<%= article.slug %>"><%- include('svg/_eye.ejs') %></a>
-        <form action="/articles/<%= article.slug %>?_method=PUT" method="POST">
+        <a href="http://0.0.0.0:3005/articles/<%= article.id %>"><%- include('svg/_eye.ejs') %></a>
+        <form action="/articles/<%= article.id %>?_method=PUT" method="POST">
           <button class="btn btn-link" id="like-btn"
             type="submit"><%- include('svg/_heart.ejs') %></button><%= article.like %>
         </form>
-        <a id="edit" href="http://0.0.0.0:3005/articles/edit/<%= article.slug %>"><%- include('svg/_pen.ejs') %></a>
-        <!-- <a href="http://0.0.0.0:3005/articles/<%= article.slug %>/comment/new"><%- include('svg/_comment.ejs') %></a> -->
+        <a id="edit" href="http://0.0.0.0:3005/articles/edit/<%= article.id %>"><%- include('svg/_pen.ejs') %></a>
+        <!-- <a href="http://0.0.0.0:3005/articles/<%= article.id %>/comment/new"><%- include('svg/_comment.ejs') %></a> -->
         <a id="edit" data-bs-toggle="modal" data-bs-target="#exampleModal"><%- include('svg/_comment.ejs') %></a>
         <form action="/articles/<%= article.id %>?_method=DELETE" method="POST">
           <button class="btn btn-link" type="submit"><%- include('svg/_trash.ejs') %></button>
@@ -80,7 +80,7 @@
 
       $.ajax({
         type: 'PUT',
-        url: '/articles/:slug',
+        url: '/articles/:id',
         contentType: 'application/json',
         processData: false,
         data: JSON.stringify({

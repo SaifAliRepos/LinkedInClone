@@ -15,14 +15,20 @@ var bodyParser = require('body-parser')
 
 connectDB();
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, x-auth-token, Content-Type, Accept");
+  next();
+});
+
 app.use(methodOverride('_method'))
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/uploads', express.static(__dirname + 'uploads'));
-app.use(express.urlencoded({ extended: false }))
+app.use(express.json({ limit: "5mb", extended: true }))
+app.use(express.urlencoded({ limit: "5mb", extended: true, parameterLimit: 50000 }))
 
 app.set('view engine', 'ejs')
-
-app.get('/', getAllArticles)
 
 app.use(express.json()) //allow us to get data in body
 app.use('/articles', articleRouter)

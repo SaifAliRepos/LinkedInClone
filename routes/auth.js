@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
-      return res.json('Invalid credentials')
+      return res.status(401).json({ errors: [{ msg: "Invalid password" }] })
     }
 
     //return jsonwebtoken

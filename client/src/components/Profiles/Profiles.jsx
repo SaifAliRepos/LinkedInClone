@@ -3,20 +3,20 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-import Image from 'react-bootstrap/Image';
 import { useProfile } from '../../actions/profile';
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
 import ProfilesList from './ProfilesList';
 
 export const Profiles = () => {
-  const { getProfiles } = useProfile();
+  const { getConnectedProfiles } = useProfile();
 
   const [profiles, setProfiles] = useState([]);
 
   const fetchData = async () => {
-    let fetchedPosts = await getProfiles();
-    setProfiles(fetchedPosts.profiles);
+    const fetchedProfiles = await getConnectedProfiles();
+    if (fetchedProfiles) {
+      setProfiles(fetchedProfiles.profiles);
+    }
   };
 
   useEffect(() => {
@@ -30,6 +30,12 @@ export const Profiles = () => {
       <Container>
         <Row className='px-5 mt-5'>
           <Col md={9} className='border shadow p-3 bg-gray'>
+            <h3>
+              <strong>Your connections</strong>
+            </h3>
+            <small>Start poking new ideas...</small>
+            <br />
+            <br />
             <ProfilesList profiles={profiles} shortcut={false} />
           </Col>
           <Col md={3} className='text-center'>

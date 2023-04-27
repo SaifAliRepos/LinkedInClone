@@ -14,7 +14,7 @@ module.exports = function (req, res, next) {
     next()
 
   } catch (error) {
-    res.status(401).json({ Message: "Something went wrong" })
+    res.status(401).json({ Message: "Something went wrong or token expired" })
   }
 }
 

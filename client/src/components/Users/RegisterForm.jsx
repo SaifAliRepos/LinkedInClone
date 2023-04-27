@@ -8,8 +8,11 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../actions/auth';
 import { SET_AlERT } from '../../reducers/alertSlice';
+import { useMediaQuery } from 'react-responsive';
 
 const RegisterForm = () => {
+  const isSmallScreen = useMediaQuery({ maxWidth: 600 });
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register } = useAuth();
@@ -98,7 +101,11 @@ const RegisterForm = () => {
               <Button
                 type='submit'
                 size='lg'
-                variant='outline-success x-large-btn'
+                variant={
+                  isSmallScreen
+                    ? 'outline-success px-5'
+                    : 'outline-success x-large-btn'
+                }
                 value='Register'
               >
                 Register

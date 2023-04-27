@@ -36,6 +36,19 @@ export const useProfile = () => {
     }
   };
 
+  const getConnectedProfiles = async () => {
+    try {
+      const res = await api.get('/profile/connected-profiles');
+      if (!res) {
+        console.log('Unable to fecth profiles')
+      }
+      return res.data;
+
+    } catch (err) {
+      console.log(err)
+    }
+  };
+
 
   const getMyProfile = async () => {
     try {
@@ -59,7 +72,7 @@ export const useProfile = () => {
       return res.data;
 
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
 
     }
   }
@@ -152,6 +165,7 @@ export const useProfile = () => {
     addEducation,
     removeEducation,
     addExperience,
-    removeExperience
+    removeExperience,
+    getConnectedProfiles,
   };
 };

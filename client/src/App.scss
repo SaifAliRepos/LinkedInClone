@@ -98,11 +98,39 @@
   background-color: rgba(54, 54, 54, 0.41);
 }
 
+.cropped-image {
+  width: 540px !important;
+  height: 400px !important;
+  object-fit: cover !important;
+}
+
 .accordion-button:focus {
   outline: none !important;
   box-shadow: none !important;
   border-color: transparent !important;
   color: black !important;
+}
+
+.card-1 {
+  background-color: rgb(75, 74, 74);
+  color: white;
+  border-radius: 5px;
+}
+
+.card-2 {
+  background-color: #1c87c9b7;
+  color: white;
+  border-radius: 5px;
+}
+
+.card-1:hover {
+  background-color: white;
+  color: black;
+}
+
+.card-2:hover {
+  background-color: white;
+  color: black;
 }
 
 .no-shadow {
@@ -134,6 +162,10 @@
   margin-top: -20px;
 }
 
+.mt-neg-profile {
+  margin-top: -4rem !important;
+}
+
 .mt-neg-50 {
   margin-top: -100px !important;
 }
@@ -157,15 +189,39 @@
 
 .gray-text:hover {
   color: black;
+  font-weight: bolder;
 }
 
 .x-large-btn {
-  padding-left: 175px !important;
-  padding-right: 175px !important;
+  width: 350px !important;
 }
+
+// @media only screen and (max-width: 550px) {
+//   .x-large-btn {
+//     width: 210px !important;
+//   }
+// }
+
+// @media only screen and (max-width: 1200px) {
+//   .x-large-btn {
+//     width: 350px !important;
+//   }
+// }
 
 .underline:hover {
   text-decoration: underline !important;
+}
+
+.icon-danger:hover {
+  background-color: rgb(199, 2, 2) !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+.icon-primary:hover {
+  background-color: rgb(0, 85, 211) !important;
+  color: white !important;
+  border-radius: 50%;
 }
 
 .bg-profile {
@@ -176,19 +232,7 @@
   padding-block: 100px;
 }
 
-@media only screen and (max-width: 850px) {
-  .x-large-btn {
-    padding-left: 65px !important;
-    padding-right: 65px !important;
-  }
-}
 
-@media only screen and (max-width: 1200px) {
-  .x-large-btn {
-    padding-left: 100px !important;
-    padding-right: 100px !important;
-  }
-}
 
 .sm-container {
   width: 50% !important;

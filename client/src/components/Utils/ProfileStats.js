@@ -4,7 +4,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 function ProfileStats() {
   return (
     <div>
-      <Card style={{ width: '17rem' }} className='rounded'>
+      <Card className='rounded mx-3'>
         <div className='bg-dark rounded-top'>    <Card.Img
           className='img-fluid rounded-circle mx-auto d-block w-25 my-3'
           src='https://media.licdn.com/dms/image/D5603AQE3fFjSR3noNg/profile-displayphoto-shrink_800_800/0/1668849247496?e=1684972800&v=beta&t=JM39gXHjeY1avI30KPP8dOcmhDFgfzzxXdphNfEIH2A'
@@ -25,7 +25,7 @@ function ProfileStats() {
           <Card.Link href="#">Another Link</Card.Link>
         </Card.Body>
       </Card>
-      <Card style={{ width: '17rem' }} className='mt-3'>
+      <Card className='mt-3 mx-3'>
         <Card.Img
           variant='top'
           src='https://media.licdn.com/dms/image/C4D22AQHSqXQEEHBLoA/feedshare-shrink_800/0/1673938544894?e=1682553600&v=beta&t=h-0NgaFgIF9So3IclZuwd2EodcHdjVhCjsJg61UjCNs'

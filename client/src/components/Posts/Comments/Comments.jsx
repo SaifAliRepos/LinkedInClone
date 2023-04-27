@@ -8,6 +8,7 @@ import Chat from '../../../icons/chat';
 import { usePost } from '../../../actions/posts';
 import Trash from '../../../icons/trash';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 function CustomToggle({ children, eventKey }) {
   const decoratedOnClick = useAccordionButton(eventKey);
@@ -20,6 +21,8 @@ function CustomToggle({ children, eventKey }) {
 }
 
 function Comments(props) {
+  const { user_id } = useParams();
+
   const { addComment, deleteComment } = usePost();
   const [text, setComment] = useState('');
 
@@ -29,7 +32,7 @@ function Comments(props) {
 
   const handleRemoveComment = async (commentId) => {
     await deleteComment(postId, commentId);
-    props.fetchData();
+    props.fetchData(user_id);
   };
 
   const onSubmit = async (e) => {

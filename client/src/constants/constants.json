@@ -1,0 +1,11 @@
+{
+  "POST_UPDATED": "Post updated successfully!",
+  "POST_DELETED": "Post removed successfully!",
+  "POST_CREATED": "Post created successfully!",
+  "POST_NOT_LOADED": "Unable to load posts..",
+  "USER_CREATED": "User registered successfully!",
+  "SIGNIN": "Signed in succesfully!",
+  "PROFILE_UPDATED": "Profile updated successfully!",
+  "PROFILE_DELETED": "Profile removed successfully!",
+  "PROFILE_CREATED": "Profile created successfully!"
+}

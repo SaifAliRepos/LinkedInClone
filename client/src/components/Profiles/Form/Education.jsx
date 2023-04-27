@@ -53,6 +53,7 @@ function EducationForm(props) {
   const onSubmit = async (e) => {
     e.preventDefault();
     console.log(eduData);
+    //we need to handle update education as well
     await addEducation({ name, degree, location, from, to });
     props.fetchData();
     props.closeModal();

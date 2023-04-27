@@ -10,10 +10,15 @@ import Linkedin from '../../icons/linkedin';
 import Posts from '../../icons/posts';
 import Profile from '../../icons/profiles';
 import { LOGOUT } from '../../reducers/authSlice';
+import MyNetwork from '../../icons/network';
+import { useMediaQuery } from 'react-responsive';
 
 const NavScrollExample = () => {
+  const isMediumScreen = useMediaQuery({ maxWidth: 1000 });
+
   const activeUser = useSelector((state) => state.auth.user);
   const activeUserId = useSelector((state) => state.auth.user?._id);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,12 +32,15 @@ const NavScrollExample = () => {
     <div>
       <Navbar expand='lg' className={navbarStyle}>
         <Container>
-          <Navbar.Brand href='/'>
+          <Navbar.Brand onClick={() => navigate('/posts')}>
             <span className='my-4 mx-1 h4 blue'>m i n i LINKED</span>
             <Linkedin />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='navbarScroll' />
-          <Navbar.Collapse id='navbarScroll'>
+          <Navbar.Collapse
+            className={isMediumScreen ? 'text-left' : 'text-center'}
+            id='navbarScroll'
+          >
             <Nav
               className='me-auto my-2 my-lg-0'
               style={{ maxHeight: '100px' }}
@@ -40,38 +48,43 @@ const NavScrollExample = () => {
             ></Nav>
             <Nav.Link
               className='mright-4'
-              onClick={() => navigate('/profiles')}
+              onClick={() => navigate('/my-network')}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <Community />
+              <MyNetwork />
               <br />
-              <span className='gray-text'>Community</span>
+              <span className='gray-text'>Network</span>
             </Nav.Link>
             <Nav.Link className='mright-4' onClick={() => navigate('/posts')}>
-              &nbsp;&nbsp;
               <Posts />
               <br />
               <span className='gray-text'>Posts</span>
             </Nav.Link>
             <Nav.Link
               className='mright-4'
-              onClick={() => navigate(`/profiles/user/${activeUserId}`)}
+              onClick={() => navigate('/profiles')}
             >
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Community />
+              <br />
+              <span className='gray-text'>Community</span>
+            </Nav.Link>
+            <Nav.Link
+              className='mright-4'
+              onClick={() => navigate(`/profile/user/${activeUserId}`)}
+            >
               <Profile />
               <br />
               <span className='gray-text'>My Profile</span>
             </Nav.Link>
 
-            <div className='d-none d-lg-block'>
+            <div className='d-none d-lg-block mright-4'>
               <div className='vertical-rule'></div>
             </div>
 
-            <Form className='d-flex'>
+            <Form className='d-flex my-2'>
               <Button
                 href='/register'
                 variant='outline-danger'
-                className={activeUser ? 'd-none' : 'rounded-5 mx-2'}
+                className={activeUser ? 'd-none' : 'rounded-5'}
                 size='md'
               >
                 Register
@@ -79,11 +92,11 @@ const NavScrollExample = () => {
               <Button
                 href='/'
                 variant='outline-primary'
-                className={'rounded-5'}
+                className={'rounded-5 mx-2'}
                 size='md'
                 onClick={() => activeUser && dispatch(LOGOUT())}
               >
-                {activeUser ? 'Logout' : 'Login'}
+                {activeUser ? `Logout (${activeUser.name})` : 'Login'}
               </Button>
             </Form>
           </Navbar.Collapse>

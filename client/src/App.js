@@ -15,6 +15,8 @@ import { Posts } from './components/Posts/Posts';
 import { Profiles } from './components/Profiles/Profiles';
 import RegisterForm from './components/Users/RegisterForm';
 import ViewProfile from './components/Profiles/ViewProfile';
+import Network from './components/Users/Network';
+import RecentActivity from './components/Profiles/RecentActivity';
 
 
 function App() {
@@ -45,7 +47,9 @@ function App() {
             <Route path="/" element={<Introduction />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/profiles" element={<PrivateRoutes Component={Profiles} />} />
-            <Route path="/profiles/user/:user_id" element={<PrivateRoutes Component={ViewProfile} />} />
+            <Route path="/my-network" element={<PrivateRoutes Component={Network} />} />
+            <Route path="/profile/user/:user_id" element={<PrivateRoutes Component={ViewProfile} />} />
+            <Route path="/profile/user/:user_id/recent_activity" element={<PrivateRoutes Component={RecentActivity} />} />
             <Route path="/posts" element={<PrivateRoutes Component={Posts} />} />
           </Routes>
         </Router>

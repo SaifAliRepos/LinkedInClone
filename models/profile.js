@@ -17,11 +17,10 @@ const profileSchema = new mongooose.Schema({
   },
   status: {
     type: String,
-    required: true
+    default: false
   },
   skills: {
-    type: [String],
-    required: true
+    type: String,
   },
   bio: {
     type: String
@@ -31,10 +30,12 @@ const profileSchema = new mongooose.Schema({
   },
   experience: [{
     title: {
-      type: String
+      type: String,
+      required: true
     },
     company: {
-      type: String
+      type: String,
+      required: true
     },
     location: {
       type: String
@@ -56,6 +57,11 @@ const profileSchema = new mongooose.Schema({
   education: [{
     name: {
       type: String,
+      required: true
+    },
+    degree: {
+      type: String,
+      required: true
     },
     location: {
       type: String

@@ -4,10 +4,14 @@ import Container from 'react-bootstrap/esm/Container';
 import Form from 'react-bootstrap/Form';
 import { usePost } from '../../actions/posts';
 import Badge from 'react-bootstrap/Badge';
+import { useParams } from 'react-router-dom';
 
 function NewPost(props) {
+  const { user_id } = useParams();
+
   const { createPost, updatePost } = usePost();
   const [img, setImg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [postData, setFormData] = useState({
     title: props?.data?.title || '',
@@ -33,7 +37,7 @@ function NewPost(props) {
         // Check the size of the dataUrl before setting the img state
         const maxImgSize = 3 * 1024 * 1024; // 5MB max size
         if (dataUrl.length <= maxImgSize) {
-          setImg(dataUrl);
+          setImg(dataUrl.toString());
         } else {
           // Handle error for dataUrl that exceeds the max size
           console.error('The selected file is too large.');
@@ -45,17 +49,25 @@ function NewPost(props) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (props.actionBtn === 'Update') {
       await updatePost({ title, description }, postId);
 
-      props.fetchData();
+      props.fetchData(user_id);
       props.closeModal();
+      setIsLoading(false);
     }
 
     if (props.actionBtn === 'Post') {
       await createPost({ title, description, img });
       props.fetchData();
+      setIsLoading(false);
     }
+    setFormData({
+      title: '',
+      description: '',
+      img: '',
+    });
   };
 
   return (
@@ -89,8 +101,8 @@ function NewPost(props) {
               size='sm'
               type='file'
               name='image'
+              accept='images/*'
               onChange={handleFileChange}
-              required
             />
           </Form.Group>
 
@@ -98,9 +110,9 @@ function NewPost(props) {
             type='submit'
             size='md px-5'
             variant='success'
-            value='Register'
+            disabled={isLoading}
           >
-            {props.actionBtn}
+            {isLoading ? 'Submitting...' : props.actionBtn}
           </Button>
           <hr />
           <p>

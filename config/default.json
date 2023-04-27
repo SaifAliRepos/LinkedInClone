@@ -1,4 +1,7 @@
 {
-  "mongoURL": "mongodb+srv://admin:admin@cluster0.oi2owbd.mongodb.net/?retryWrites=true&w=majority",
+  "mongoURL": "mongodb://localhost:27017/linkedin",
+  "mongoUrlPrimary": "mongodb+srv://admin:admin@cluster0.oi2owbd.mongodb.net/?retryWrites=true&w=majority",
   "jsonSecret": "xxx"
 }
+
+

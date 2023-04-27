@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { default: slugify } = require('slugify')
 const User = require('../models/user')
 
 const articleSchema = new mongoose.Schema(
@@ -14,17 +13,15 @@ const articleSchema = new mongoose.Schema(
     description: {
       type: String
     },
+    img: {
+      type: String
+    },
     avatar: {
       type: String
     },
     date: {
       type: Date,
       default: () => Date.now()
-    },
-    slug: {
-      type: String,
-      required: true,
-      unique: true
     },
     like: [{
       user: {
@@ -44,14 +41,5 @@ const articleSchema = new mongoose.Schema(
 
   }
 )
-
-articleSchema.pre('validate', function (next) {
-  if (this.title) {
-    this.slug = slugify(this.title, { lower: true, strict: true })
-  }
-  next()
-})
-
-
 
 module.exports = mongoose.model('Article', articleSchema)

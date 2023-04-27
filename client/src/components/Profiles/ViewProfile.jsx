@@ -9,7 +9,7 @@ import Instagram from '../../icons/instagram';
 import Youtube from '../../icons/youtube';
 import Git from '../../icons/github';
 import Facebook from '../../icons/facebook';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import ProfilesList from './ProfilesList';
 import { convertDate } from '../Utils/covertDate';
@@ -17,14 +17,17 @@ import Shop from '../../icons/shop';
 import Work from '../../icons/work';
 import NewProfile from './Form/NewProfile';
 import { useSelector } from 'react-redux';
+import { usePost } from '../../actions/posts';
 
 function ViewProfile(props) {
   const { user_id } = useParams();
-
   const activeUserId = useSelector((state) => state.auth.user?._id);
-  const { getProfile, getProfiles } = useProfile();
-  const [profiles, setProfiles] = useState([]);
 
+  const { getProfile, getProfiles } = useProfile();
+  const { getUserPosts } = usePost();
+
+  const [userPosts, setUserPosts] = useState();
+  const [profiles, setProfiles] = useState([]);
   const [profile, setProfile] = useState({
     company: '',
     location: '',
@@ -43,14 +46,18 @@ function ViewProfile(props) {
       const res = await getProfile(user_id);
       setProfile(res);
 
-      let fetchedPosts = await getProfiles();
-      setProfiles(fetchedPosts.profiles);
+      const fetchedrofiles = await getProfiles();
+      setProfiles(fetchedrofiles.profiles);
+
+      let fetchedPosts = await getUserPosts(user_id);
+      setUserPosts(fetchedPosts?.articles);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
+    console.log('fired in view profile');
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user_id]);
@@ -136,7 +143,7 @@ function ViewProfile(props) {
                 <h4 className='mb-3'>
                   <strong>Skills</strong>
                 </h4>
-                {profile?.skills.split('|').map((skill) => (
+                {profile?.skills?.split('|').map((skill) => (
                   <strong
                     key={skill}
                     className='bg-success text-white rounded p-1 mx-1'
@@ -149,7 +156,7 @@ function ViewProfile(props) {
                 <h4 className='my-3'>
                   <strong>Education</strong>
                 </h4>
-                {profile.education && profile.education.length > 0 ? (
+                {profile?.education && profile?.education.length > 0 ? (
                   <ul className='StepProgress'>
                     <li className='StepProgress-item is-done'>
                       {profile?.education?.map((edu) => (
@@ -188,7 +195,7 @@ function ViewProfile(props) {
                 <h4 className='mb-3'>
                   <strong>Experience</strong>
                 </h4>
-                {profile.experience && profile.experience.length > 0 ? (
+                {profile?.experience && profile.experience.length > 0 ? (
                   <ul className='StepProgress'>
                     <li className='StepProgress-item is-done'>
                       {profile?.experience?.map((exp) => (
@@ -225,11 +232,20 @@ function ViewProfile(props) {
                   <p>Edit profile to add your experiences</p>
                 )}
               </div>
+              <Link
+                className='text-decoration-none text-dark'
+                to={`/profile/user/${profile?.user?._id}/recent_activity`}
+              >
+                <h5 className='underline my-3 text-center'>
+                  <strong>
+                    View recent activity of {profile?.user?.name} {'->'}
+                  </strong>
+                </h5>
+              </Link>
             </Fragment>
           </Col>
-
           <Col className='text-center my-5'>
-            <Card style={{ width: '18rem' }}>
+            <Card>
               <Card.Img
                 variant='top'
                 src='https://notamartwork.com/wp-content/uploads/2022/02/11-jobs-for-disabled-people-at-home-min.webp'
@@ -242,7 +258,7 @@ function ViewProfile(props) {
                 </Card.Text>
               </Card.Body>
             </Card>
-            <Card style={{ width: '18rem' }} className='mt-3 text-center'>
+            <Card className='mt-3'>
               <Card.Body>
                 <Card.Title>
                   <strong>People you might know</strong>
@@ -251,7 +267,7 @@ function ViewProfile(props) {
                 <ProfilesList profiles={profiles} shortcut={true} />
               </Card.Body>
             </Card>
-            <Card style={{ width: '18rem' }} className='mt-3'>
+            <Card className='mt-3'>
               <Card.Img
                 variant='top'
                 src='https://media.licdn.com/dms/image/C4D22AQHSqXQEEHBLoA/feedshare-shrink_800/0/1673938544894?e=1682553600&v=beta&t=h-0NgaFgIF9So3IclZuwd2EodcHdjVhCjsJg61UjCNs'
@@ -268,7 +284,7 @@ function ViewProfile(props) {
         </Row>
       </Container>
     </div>
-  );
+  ); // add else condition here is profile is undefined then pass active user props create profile
 }
 
 export default ViewProfile;
