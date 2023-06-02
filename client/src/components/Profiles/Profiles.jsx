@@ -40,7 +40,7 @@ export const Profiles = () => {
           </Col>
           <Col md={3} className='text-center'>
             <div>
-              <Card style={{ width: '17rem' }}>
+              <Card>
                 <Card.Img
                   variant='top'
                   src='https://images.businessnewsdaily.com/app/uploads/2022/04/04072326/freelancer_Prostock-Studio_getty.jpg'

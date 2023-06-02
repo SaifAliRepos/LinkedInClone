@@ -18,8 +18,9 @@ import Work from '../../icons/work';
 import NewProfile from './Form/NewProfile';
 import { useSelector } from 'react-redux';
 import { usePost } from '../../actions/posts';
+import NewCv from './Form/NewCv';
 
-function ViewProfile(props) {
+function ViewProfile() {
   const { user_id } = useParams();
   const activeUserId = useSelector((state) => state.auth.user?._id);
 
@@ -75,7 +76,7 @@ function ViewProfile(props) {
                       <Image
                         fluid
                         className='rounded-circle d-block position-absolute mx-3 mt-4'
-                        src='https://media.licdn.com/dms/image/D5603AQE3fFjSR3noNg/profile-displayphoto-shrink_800_800/0/1668849247496?e=1684972800&v=beta&t=JM39gXHjeY1avI30KPP8dOcmhDFgfzzxXdphNfEIH2A'
+                        src='https://statinfer.com/wp-content/uploads/dummy-user.png'
                         alt='Profile picture'
                         width={'150px'}
                       />
@@ -104,7 +105,10 @@ function ViewProfile(props) {
                       <strong>Air University</strong>
                       <strong className='d-flex'>{profile?.company}</strong>
                       {activeUserId === profile?.user?._id && (
-                        <NewProfile profile={profile} fetchData={fetchData} />
+                        <div>
+                          <NewProfile profile={profile} fetchData={fetchData} />
+                          <NewCv profile={profile} />
+                        </div>
                       )}
                     </div>
                   </Col>
@@ -270,7 +274,7 @@ function ViewProfile(props) {
             <Card className='mt-3'>
               <Card.Img
                 variant='top'
-                src='https://media.licdn.com/dms/image/C4D22AQHSqXQEEHBLoA/feedshare-shrink_800/0/1673938544894?e=1682553600&v=beta&t=h-0NgaFgIF9So3IclZuwd2EodcHdjVhCjsJg61UjCNs'
+                src='https://assets.wpdeveloper.com/2022/01/903de8dc-why-do-a-content-writer-or-author-must-need-a-personal-website-how-to-create-one-without-coding.png'
               />
               <Card.Body>
                 <Card.Text className='text-center'>

@@ -67,6 +67,9 @@ function EducationForm(props) {
 
   return (
     <div>
+      {/* Use react hook form instead for better state management and performance optimization
+      It wont change value on every key stroke and it's also and provide enhanced validation options */}
+
       <Form onSubmit={(e) => onSubmit(e)}>
         <div className='text-center'>
           <Button variant='light' className='mt-3 m-2' onClick={prevEduLevel}>
@@ -124,7 +127,6 @@ function EducationForm(props) {
           <Form.Control
             size='lg'
             type='date'
-            placeholder='Enter skills with | separator '
             name='from'
             from={from ? convertDate(from) : ''}
             onChange={(e) => onChange(e)}
@@ -135,7 +137,6 @@ function EducationForm(props) {
           <Form.Control
             size='lg'
             type='date'
-            placeholder='Enter skills with | separator '
             name='to'
             value={to ? convertDate(to) : ''}
             onChange={(e) => onChange(e)}

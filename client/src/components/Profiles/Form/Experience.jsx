@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { useProfile } from '../../../actions/profile';
 import Backward from '../../../icons/backward';
 import Forward from '../../../icons/forward';
+import { convertDate } from '../../Utils/covertDate';
 
 function ExperienceForm(props) {
   const { addExperience, removeExperience } = useProfile();
@@ -87,24 +88,24 @@ function ExperienceForm(props) {
         </div>
 
         <small className='mx-1'>{'Name of institute'}</small>
-        <Form.Group className='mb-4' controlId='formName'>
+        <Form.Group className='mb-4'>
           <Form.Control
             size='lg'
             type='text'
             placeholder='Enter Name of institute'
-            name='name'
+            name='title'
             value={title || ''}
             onChange={(e) => onChange(e)}
             required
           />
         </Form.Group>
         <small className='mx-1'>{'Degree'}</small>
-        <Form.Group className='mb-4' controlId='formName'>
+        <Form.Group className='mb-4'>
           <Form.Control
             as='textarea'
             rows='5'
             placeholder='Enter your degree'
-            name='degree'
+            name='company'
             value={company || ''}
             onChange={(e) => onChange(e)}
             required
@@ -129,7 +130,7 @@ function ExperienceForm(props) {
             type='date'
             placeholder='Enter skills with | separator '
             name='from'
-            value={from || ''}
+            value={from ? convertDate(from) : ''}
             onChange={(e) => onChange(e)}
           />
         </Form.Group>
@@ -140,7 +141,7 @@ function ExperienceForm(props) {
             type='date'
             placeholder='Enter skills with | separator '
             name='to'
-            value={to || ''}
+            value={to ? convertDate(to) : ''}
             onChange={(e) => onChange(e)}
           />
         </Form.Group>
@@ -159,7 +160,7 @@ function ExperienceForm(props) {
         <Button
           variant='danger'
           size='sm'
-          onClick={() => deleteExperience(props?.education._id)}
+          onClick={() => deleteExperience(props?.experience._id)}
           className='mx-2'
         >
           {'Remove Education'}

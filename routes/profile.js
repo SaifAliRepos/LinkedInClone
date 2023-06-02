@@ -12,7 +12,8 @@ const { getCurrentUserProfile, postProfile, getProfileByUserID,
   deleteExperience,
   postEducation,
   deleteEducation,
-  getConnectedProfiles } = require('../controllers/profile')
+  getConnectedProfiles,
+  updateEducation } = require('../controllers/profile')
 
 
 // @route    GET /profile/me
@@ -87,6 +88,15 @@ router.post('/education/new', auth,
   body('location').exists().withMessage("Location is required"),
   body('from').exists().withMessage("Starting date is required")],
   postEducation
+)
+
+// @route    Put /profile/education/:edu_id
+// @desc     Updating education on profile
+// @access   Private
+
+
+router.patch('/education/:edu_id', auth,
+  updateEducation
 )
 
 // @route    Delete /profile/education/:expr_id

@@ -213,6 +213,41 @@ const postEducation = async (req, res) => {
 
 }
 
+
+const updateEducation = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  };
+
+  try {
+
+    const profile = await Profile.findOneAndUpdate(
+      {
+        user: req.user.id,
+        "education._id": req.params.edu_id
+      },
+      {
+        $set: {
+          "education.$": req.body
+        }
+      },
+      { new: true }
+    );
+
+    if (!profile) {
+      return res.json("Profile not found")
+    }
+
+    return res.json({ profile })
+
+  } catch (error) {
+    res.json(error)
+  }
+
+}
+
+
 const deleteEducation = async (req, res) => {
 
   try {
@@ -260,6 +295,6 @@ const getConnectedProfiles = async (req, res) => {
 module.exports = {
   getCurrentUserProfile, postProfile, getProfileByUserID,
   getAllProfiles, deleteProfile, postExperience, deleteExperience,
-  postEducation, deleteEducation, getConnectedProfiles
+  postEducation, deleteEducation, getConnectedProfiles, updateEducation
 }
 

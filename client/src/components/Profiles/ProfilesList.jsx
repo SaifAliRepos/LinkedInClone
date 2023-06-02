@@ -8,11 +8,11 @@ function ProfileListItem({ profile }) {
       <div className='d-flex align-items-center'>
         <Image
           width={'80px'}
-          className='rounded-circle border'
+          className='rounded-circle border mx-2'
           src='https://statinfer.com/wp-content/uploads/dummy-user.png'
           alt='Profile picture'
         />
-        <div className='d-inline-block bg-white px-3 py-1 rounded'>
+        <div className='d-inline-block bg-white px-2 py-1 rounded'>
           <Link
             className='text-decoration-none text-dark'
             to={`/profile/user/${profile.user._id}`}
